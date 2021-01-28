@@ -3,27 +3,65 @@ import { shallow } from "enzyme";
 import { findByTestAttr, storeFactory } from "../../tests/testUtils";
 import Input from "../InputComponent/input";
 
-const setup = (initialState = {}) => {
-    const store = storeFactory(initialState)
+// const setup = (initialState = {}) => {
+//     const store = storeFactory(initialState)
+//   const wrapper = shallow(<Input store={store} />);
+//   return wrapper
+// };
+
+const setup = (initialState={}) => {
+  const store = storeFactory(initialState);
   const wrapper = shallow(<Input store={store} />).dive().dive();
-};
+  return wrapper;
+}
 
 describe("render", () => {
   describe("word has not been gussed", () => {
-    test("renders component without error", () => {});
+    let wrapper;
+    beforeEach(()=> {
+        const initialState = {success: false} 
+  wrapper = setup(initialState);
 
-    test("renders input box", () => {});
+    })
+    test("renders component without error", () => {
+       const component = findByTestAttr(wrapper, "component-input")
+        expect(component.length).toBe(1)
+    });
 
-    test("renders submit button", () => {});
+    test("renders input box", () => {
+        const inputBox = findByTestAttr(wrapper, "input-box")
+        expect(inputBox.length).toBe(1)
+    });
+
+    test("renders submit button", () => {
+        const submitButton = findByTestAttr(wrapper, "submit-button")
+        expect(submitButton.length).toBe(1)
+    });
   });
 
   describe("word has been gussed", () => {
-    test("renders component without error", () => {});
+    let wrapper;
+    beforeEach(()=> {
+        const initialState = {success: true} 
+  wrapper = setup(initialState);
 
-    test("does not renders input box", () => {});
+    })
 
-    test("does not renders submit button", () => {});
+    test("renders component without error", () => {
+      const component = findByTestAttr(wrapper, "component-input")
+      expect(component.length).toBe(1)
+    });
+
+    test("does not renders input box", () => {
+      const inputBox = findByTestAttr(wrapper, "input-box")
+      expect(inputBox.length).toBe(0)
+    });
+
+    test("does not renders submit button", () => {
+      const submitButton = findByTestAttr(wrapper, "submit-button")
+      expect(submitButton.length).toBe(0)
+    });
   });
-});
+})
 
 describe("updating of the screen", () => {});
